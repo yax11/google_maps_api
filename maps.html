@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="coordinates.js"></script>
+<!--     <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>-->
+
+        <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtHG8qq70a_Vxc_FwdIV6g7KiwiUobKBQ&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    <style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <!-- jsFiddle will insert css and js -->
+  </head>
+  <body>
+    <div id="map"></div>
+
+  </body>
+
+<script type="text/javascript">
+  let map;
+
+  function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat:8, lng:12},
+      zoom: 8,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      backgroundColor:'none',
+ 
+    });
+
+    map.addListener("zoom_changed", ()=>{
+      if (map.getZoom() <5) {
+        x = document.getElementById("content")
+        x.style.display = "none";
+        y = document.getElementsByClassName("gm-style-iw gm-style-iw-c")
+        for(i in y){
+          v = document.getElementsByClassName(i)
+          v[0].style.display = "none";
+        }
+      }
+    })
+
+  map.setOptions({ styles:
+
+  [
+    {
+      "featureType": "all",
+      "elementType": "all",
+      "stylers": [
+        { "color": "#aaaaaa" },
+        { "visibility": "on" },
+        ]
+    }
+  ]
+
+ });
+
+ function add_state(
+  state_name,
+  state_main_name,
+  state_center = 0,
+  paths = state_name,
+  strokeColor= "#070",
+  strokeOpacity= 1,
+  strokeWeight= 1,
+  fillColor = "#00FF00",
+  fillOpacity= 0.5){
+
+  const marker = new google.maps.Marker({
+    position: { lng:state_center[1], lat: state_center[0] },
+    map,
+    icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+  });
+
+    const contentString =
+    '<div' +
+    '<h3 syle="color: red"><strong>'+state_main_name+'</strong></h3>' +
+    '<div id="content">' +
+    "<span><b>Total Cases</b>: 000</span><br>" +
+    "<span><b>Male</b>: 000</span><br>" +
+    "<span><b>Female</b>: 000</span><br>" +
+    "</div>" +
+    "</div>";
+
+  const infowindow = new google.maps.InfoWindow({
+    content: contentString,
+    maxWidth: 200,
+  });
+
+
+    infowindow.open(map, marker);
+
+  marker.addListener("mousedown", () => {
+    infowindow.open(map, marker);
+  });
+
+  // marker.addListener("mouseout", () => {
+  //   infowindow.close(map, marker);
+  // });
+
+  const X = new google.maps.Polygon({
+    paths: state_name,
+    strokeColor: strokeColor,
+    strokeOpacity: strokeOpacity,
+    strokeWeight: strokeWeight,
+    fillColor: fillColor,
+    fillOpacity: fillOpacity,
+  });
+  X.setMap(map);
+  // X.addListener("mouseover", () => {X.setVisible(false)})
+  X.addListener("mouseover", () => {X.setOptions({fillColor:"#080"})})
+  X.addListener("mouseout", () => {X.setOptions({fillColor:"#0f0"})})
+
+ };
+
+
+ add_state(fct_abuja, "FCT Abuja", [8.769752, 7.169436])
+ add_state(abia, "Abia state", [5.330544, 7.492969])
+ add_state(adamawa, "Adamawa state", [9.026682, 12.425891])
+ add_state(akwa_ibom, "Akwa Ibom State", [4.646988, 7.783792])
+ add_state(anambra, "Anambra state",[6.037982, 6.935301])
+ add_state(bauchi, "Bauchi state", [10.302501, 9.824180])
+ add_state(bayelsa, "Bayelsa state", [4.505082, 5.936177])
+ add_state(benue, "Benue state", [7.185714, 8.605003])
+ add_state(borno, "Borno state", [11.830059, 13.152574])
+ add_state(cross_river, "Cross River  state", [5.598244, 8.486567],undefined,undefined,undefined,undefined, undefined, undefined)
+ add_state(delta, "Delta state", [5.269603, 5.710856])
+ add_state(ebonyi, "Ebonyi state", [6.152060, 7.985466])
+ add_state(edo, "Edo state", [6.420276, 5.880624])
+ add_state(ekiti, "Ekiti state", [7.646769, 5.275508])
+ add_state(enugu, "Enugu state", [6.387243, 7.409459])
+ add_state(gombe, "Gombe state", [10.316511, 11.190705])
+ add_state(imo, "Imo state", [5.503799, 7.041130])
+ add_state(jigawa, "Jigawa state", [12.148189, 9.519767])
+ add_state(kaduna, "Kaduna state", [10.238771, 7.767611])
+ add_state(kano, "Kano state", [11.738603, 8.511472])
+ add_state(katsina, "Katsina state", [12.115152, 7.514935])
+ add_state(kebbi, "Kebbi state", [11.647846, 4.046361])
+ add_state(kogi, "Kogi state", [7.606907, 6.735919])
+ add_state(kwara, "Kwara state", [8.743997, 4.501234])
+ add_state(lagos, "Lagos state", [6.456485, 3.697555])
+ add_state(nasarawa, "Nasarawa state", [8.329969, 8.133071])
+ add_state(niger, "Niger state", [9.774156, 5.553658])
+ add_state(ogun, "Ogun state", [6.930828, 3.254266])
+ add_state(ondo, "Ondo state", [6.818670, 4.992181])
+ add_state(osun, "Osun state", [7.437006, 4.461709])
+ add_state(oyo, "Oyo state", [7.942299, 3.567282])
+ add_state(plateau, "Plateau state", [9.068276, 9.519157])
+ add_state(rivers, "Rivers state", [4.740140, 6.966152])
+ add_state(sokoto, "Sokoto state", [13.146918, 5.252993])
+ add_state(taraba, "Taraba state", [7.735609, 10.714394])
+ add_state(yobe, "Yobe state", [12.203036, 11.462204])
+ add_state(zamfara, "Zamfara state", [11.931008, 6.250636])
+
+};
+
+</script>
+
+<p style="background-color: red"></p>
+
+</html>
